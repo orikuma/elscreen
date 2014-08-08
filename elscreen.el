@@ -140,6 +140,11 @@ nil means don't display tabs."
              (elscreen-tab-update t))))
   :group 'elscreen)
 
+(defcustom elscreen-max-screen-num 16
+  "*Maximum number of elscreen tab."
+  :type 'integer
+  :group 'elscreen)
+
 (make-obsolete-variable 'elscreen-tab-display-create-screen
                         'elscreen-tab-display-control "2012-04-11")
 (defcustom elscreen-tab-display-control t
@@ -730,7 +735,7 @@ stored as SCREEN."
 If NOERROR is not nil, no message is displayed in mini buffer
 when error is occurred."
   (cond
-   ((>= (elscreen-get-number-of-screens) 10)
+   ((>= (elscreen-get-number-of-screens) elscreen-max-screen-num)
     (unless noerror
       (elscreen-message "No more screens."))
     nil)
@@ -1540,7 +1545,7 @@ Use \\[toggle-read-only] to permit editing."
 (defun elscreen-split ()
   (interactive)
   (if (and (null (one-window-p))
-           (< (elscreen-get-number-of-screens) 10))
+           (< (elscreen-get-number-of-screens) elscreen-max-screen-num))
       (let ((elscreen-split-buffer (current-buffer)))
         (delete-window)
         (elscreen-create)
